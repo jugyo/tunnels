@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["jugyo.org@gmail.com"]
   s.homepage    = "https://github.com/jugyo/tunnels"
   s.summary     = %q{https --(--)--> http}
-  s.description = %q{tunnel https to http}
+  s.description = %q{This tunnels https to http.}
 
   s.rubyforge_project = "tunnels"
 
