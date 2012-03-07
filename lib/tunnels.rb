@@ -5,7 +5,7 @@ require "eventmachine"
 # Copyright © 2012, Thin::Glazed was a Rails Camp New Zealand project, and is developed and maintained by Pat Allan. It is released under the open MIT Licence.
 
 module Tunnels
-  def self.run!(host = '127.0.0.1', from = 443, to = 80)
+  def self.run!(host = '127.0.0.1', to = 80, from = 443)
     EventMachine.run do
       EventMachine.start_server(host, from, HttpsProxy, to)
       puts "Ready :)"

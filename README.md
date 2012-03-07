@@ -15,11 +15,17 @@ Installation
 Run
 ---
 
-    $ tunnels
-
-or
-
     $ sudo tunnels
+
+By default, proxy to 80 port from 443 port.
+
+specify `http` port:
+
+    $ sudo tunnels 4567
+
+specify `http` port and `https` port:
+
+    $ sudo tunnels 4567 443
 
 Copyright
 ---------
