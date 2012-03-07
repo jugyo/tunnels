@@ -5,8 +5,7 @@ Tunnels
 
 This tunnels https to http.
 
-When you are using pow to develop rack app,
-`https://yourapp.dev` will be tunneled to `http://yourapp.dev`.
+You can run the [Pow](http://pow.cx/) over SSL!
 
 Installation
 ------------
