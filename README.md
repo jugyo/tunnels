@@ -17,6 +17,10 @@ Run
 
     $ sudo tunnels
 
+If you are using rvm:
+
+    $ rvmsudo tunnels
+
 By default, proxy to 80 port from 443 port.
 
 specify `http` port:
