@@ -96,7 +96,7 @@ module Tunnels
 
   class HttpsProxy < HttpProxy
     def initialize(client_port, ssl_options)
-      super(client_port)
+      super client_port
       @ssl_options = ssl_options
     end
 
