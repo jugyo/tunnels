@@ -1,3 +1,7 @@
 #!/usr/bin/env ruby
 require 'tunnels'
-Tunnels.run!('127.0.0.1', *ARGV[0..1])
+require 'daemons'
+
+Daemons.run_proc('tunnels') do
+  Tunnels.run!('127.0.0.1', *ARGV[1..2])
+end
