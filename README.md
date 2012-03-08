@@ -1,7 +1,7 @@
 Tunnels
 =======
 
-![image](http://i.imgur.com/5F9tJ.png)
+![image](http://i.imgur.com/Ej5dz.png)
 
 Tunnels is a proxy to http from https.
 
