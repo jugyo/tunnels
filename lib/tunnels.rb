@@ -2,16 +2,24 @@ require "tunnels/version"
 require "eventmachine"
 
 # most of code is from [thin-glazed](https://github.com/freelancing-god/thin-glazed).
-# Copyright © 2012, Thin::Glazed was a Rails Camp New Zealand project, and is developed and maintained by Pat Allan. It is released under the open MIT Licence.
+# Copyright © 2012, Thin::Glazed was a Rails Camp New Zealand project, and is developed
+# and maintained by Pat Allan. It is released under the open MIT Licence.
 
 module Tunnels
-  def self.run!(from = '127.0.0.1:443', to = '127.0.0.1:80')
+  def self.run!(from = '127.0.0.1:443', to = '127.0.0.1:80', cert_chain = nil, private_key = nil, verify_peer = false)
     from_host, from_port = parse_host_str(from)
     to_host, to_port = parse_host_str(to)
     puts "#{from_host}:#{from_port} --(--)--> #{to_host}:#{to_port}"
 
+    # Construct the SSL options required by EventMachine::Connection#start_tls
+    ssl_options = {
+      :cert_chain_file => cert_chain,
+      :private_key_file => private_key,
+      :verify_peer => verify_peer
+    }
+
     EventMachine.run do
-      EventMachine.start_server(from_host, from_port, HttpsProxy, to_port)
+      EventMachine.start_server(from_host, from_port, HttpsProxy, to_port, ssl_options)
       puts "Ready :)"
     end
   rescue => e
@@ -87,8 +95,13 @@ module Tunnels
   end
 
   class HttpsProxy < HttpProxy
+    def initialize(client_port, ssl_options)
+      super(client_port)
+      @ssl_options = ssl_options
+    end
+
     def post_init
-      start_tls
+      start_tls @ssl_options
     end
 
     def receive_data(data)
