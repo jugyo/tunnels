@@ -5,14 +5,28 @@ require "eventmachine"
 # Copyright © 2012, Thin::Glazed was a Rails Camp New Zealand project, and is developed and maintained by Pat Allan. It is released under the open MIT Licence.
 
 module Tunnels
-  def self.run!(host = '127.0.0.1', to = 80, from = 443)
+  def self.run!(from = '127.0.0.1:443', to = '127.0.0.1:80')
+    from_host, from_port = parse_host_str(from)
+    to_host, to_port = parse_host_str(to)
+    puts "#{from_host}:#{from_port} --(--)--> #{to_host}:#{to_port}"
+
     EventMachine.run do
-      EventMachine.start_server(host, from, HttpsProxy, to)
+      EventMachine.start_server(from_host, from_port, HttpsProxy, to_port)
       puts "Ready :)"
     end
   rescue => e
     puts e.message
     puts "Maybe you should run on `sudo`"
+  end
+
+  def self.parse_host_str(str)
+    raise ArgumentError, 'arg must not be empty' if str.empty?
+    parts = str.split(':')
+    if parts.size == 1
+      ['127.0.0.1', parts[0].to_i]
+    else
+      [parts[0], parts[1].to_i]
+    end
   end
 
   class HttpClient < EventMachine::Connection

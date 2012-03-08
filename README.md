@@ -23,13 +23,13 @@ If you are using rvm:
 
 By default, proxy to 80 port from 443 port.
 
-specify "http" port:
-
-    $ sudo tunnels 4567
-
 specify "http" port and "https" port:
 
-    $ sudo tunnels 4567 443
+    $ sudo tunnels 443 3000
+
+or
+
+    $ sudo tunnels 127.0.0.1:443 127.0.0.1:3000
 
 Copyright
 ---------

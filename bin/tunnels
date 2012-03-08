@@ -1,3 +1,16 @@
 #!/usr/bin/env ruby
 require 'tunnels'
-Tunnels.run!('127.0.0.1', *ARGV[0..1])
+unless ARGV.size == 0 || ARGV.size == 2
+  puts <<-D
+Usage:
+    tunnels [from to]
+
+Examples:
+    tunnels 443 3000
+    tunnels localhost:443 localhost:3000
+
+  D
+  exit!
+end
+
+Tunnels.run!(*ARGV)
