@@ -1,15 +1,14 @@
 #!/usr/bin/env ruby
 require 'tunnels'
-unless ARGV.size == 0 || (2..5).include?(ARGV.size)
+unless ARGV.size == 0 || (2..3).include?(ARGV.size)
   puts <<-D
 Usage:
-    tunnels [from to] [cert_chain_file] [private_key_file] [verify_peer]
-    tunnels from to [cert_chain_file [private_key_file [verify_peer]]]
+    tunnels [from to [config_file]]
 
 Examples:
     tunnels 443 3000
     tunnels localhost:443 localhost:3000
-    tunnels 443 80 /path/to/chain.crt /path/to/private.key true
+    tunnels 443 80 /path/to/config.yml
 
   D
   exit!
