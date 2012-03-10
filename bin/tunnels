@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 require 'tunnels'
-unless ARGV.size == 0 || ARGV.size == 2
+unless ARGV.size == 0 || (2..3).include?(ARGV.size)
   puts <<-D
 Usage:
-    tunnels [from to]
+    tunnels [from to [config_file]]
 
 Examples:
     tunnels 443 3000
     tunnels localhost:443 localhost:3000
+    tunnels 443 80 /path/to/config.yml
 
   D
   exit!
