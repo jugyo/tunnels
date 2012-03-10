@@ -8,6 +8,9 @@ require "openssl"
 # and maintained by Pat Allan. It is released under the open MIT Licence.
 
 module Tunnels
+
+  $DEBUG = false
+
   def self.run!(from = '127.0.0.1:443', to = '127.0.0.1:80', config_file = nil)
     from_host, from_port = parse_host_str(from)
     to_host, to_port = parse_host_str(to)
@@ -108,10 +111,10 @@ module Tunnels
         :verify_peer      => options['client']['verify']
       }
 
-      # START: Debug
-      server_cert = load_cert_file File.join(base_path, options['server']['certificate_file'])
-      puts "Server certificate: " + server_cert.subject.to_s
-      # END: Debug
+      if $DEBUG
+        server_cert = load_cert_file File.join(base_path, options['server']['certificate_file'])
+        puts "Server certificate: " + server_cert.subject.to_s
+      end
 
       unless options['client']['certificate_ca_file'].nil?
         @ssl_ca = load_cert_file File.join(base_path, options['client']['certificate_ca_file'])
@@ -125,9 +128,7 @@ module Tunnels
     def receive_data(data)
       header_string = headers.collect { |k, v| k.to_s.upcase + ": " + v }.join "\r\n"
 
-      # START: Debug
-      puts "Sending headers:\n" + header_string
-      # END: Debug
+      puts "Sending headers:\n" + header_string if $DEBUG
 
       super data.gsub(/\r\n\r\n/, "\r\n#{header_string}\r\n\r\n")
     end
@@ -136,16 +137,16 @@ module Tunnels
     # passed to #start_tls.
     # cert - String of the certificate in PEM format.
     def ssl_verify_peer(cert)
-      puts "Verify Peer"
+      puts "Verify Peer" if $DEBUG
       peer = load_cert cert
       verified = peer.verify @ssl_ca.public_key
 
-      # START: Debug
-      puts "Issuer subject: " + @ssl_ca.subject.to_s
-      puts "Peer issuer:    " + peer.issuer.to_s
-      puts "Peer subject:   " + peer.subject.to_s
-      puts "Peer verified:  " + verified.inspect
-      # END: Debug
+      if $DEBUG
+        puts "Issuer subject: " + @ssl_ca.subject.to_s
+        puts "Peer issuer:    " + peer.issuer.to_s
+        puts "Peer subject:   " + peer.subject.to_s
+        puts "Peer verified:  " + verified.inspect
+      end
 
       headers[:ssl_client_s_dn] = peer.subject.to_s
       headers[:ssl_client_verify] = if verified then "SUCCESS" else "FAILED" end
