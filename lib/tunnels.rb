@@ -91,8 +91,18 @@ module Tunnels
       start_tls
     end
 
+    def relay_from_client(data)
+      super
+      @x_forwarded_proto_header_inserted = false
+    end
+
     def receive_data(data)
-      super data.gsub(/\r\n\r\n/, "\r\nX_FORWARDED_PROTO: https\r\n\r\n")
+      unless @x_forwarded_proto_header_inserted
+        super data.gsub(/\r\n\r\n/, "\r\nX-Forwarded-Proto: https\r\n\r\n")
+        @x_forwarded_proto_header_inserted = true
+      else
+        super
+      end
     end
   end
 end
