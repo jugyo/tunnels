@@ -97,8 +97,8 @@ module Tunnels
     end
 
     def receive_data(data)
-      unless @x_forwarded_proto_header_inserted
-        super data.gsub(/\r\n\r\n/, "\r\nX-Forwarded-Proto: https\r\n\r\n")
+      if !@x_forwarded_proto_header_inserted && data =~ /\r\n\r\n/
+        super data.gsub(/\r\n\r\n/, "\r\nX_FORWARDED_PROTO: https\r\n\r\n")
         @x_forwarded_proto_header_inserted = true
       else
         super
