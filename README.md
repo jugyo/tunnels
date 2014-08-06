@@ -16,6 +16,12 @@ Run
 ---
 
     $ sudo tunnels
+    
+If you're on a Mac and wanna have tunnels run all the time, load it via launchctl from `/Library/LaunchAgents`:
+
+    $ launchctl load jugyo.tunnels.plist
+   
+or use [LaunchRocket](https://github.com/jimbojsb/launchrocket), but don't forget to check the "As Root" option.
 
 If you are using rvm:
 
